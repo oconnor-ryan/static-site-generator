@@ -1,6 +1,8 @@
 import {RESERVED_DIR_NAMES} from "./constants";
 import fs from 'fs';
 import path from 'path';
+import { readLineByLineSync } from "./helper";
+
 
 
 interface PageGlobals {
@@ -51,6 +53,69 @@ class Site {
     
 }
 
+function getFrontMatter(absFilePath: string) : any | null {
+    var jsonStarted = false;
+    var jsonEnded = false;
+    var stack: string[] = [];
+    var linesForJson: string[] = [];
+
+    var processLine = (line: string) => {
+      //  console.log(line);
+      //  console.log("END OF LINE");
+        for(var j = 0; j < line.length; j++) {
+            var char = line[j];
+            if(char === "{") {
+                stack.push(char);
+                if(!jsonStarted) {
+                    jsonStarted = true;
+                }
+            }
+            //if character is not whitespace and json {} has not been made
+            else if(char.trim() !== '' && !jsonStarted) {
+                return false;
+            }
+            else if(char === "}") {
+                stack.pop();
+                //end of json
+                if(stack.length === 0) {
+                    jsonEnded = true;
+                    break;
+                }
+            } 
+        }
+        if(jsonStarted) {
+            linesForJson.push(line);
+            //if end of json line was found, stop reading lines
+            if(jsonEnded) {
+                return false;
+            }
+        }
+        
+        return true;
+    };
+
+    readLineByLineSync(absFilePath, processLine);
+
+    //front matter was started, but not closed
+    if(jsonStarted && !jsonEnded) {
+        return null;
+    }
+
+    var jsonString = linesForJson.join("");
+
+    try {
+        var json = JSON.parse(jsonString);
+        return json;
+    } catch(err) {
+        return null;
+    }
+}
+
+//assumed that file already exists
+function getPageData(absFilePath: string) {
+    
+}
+
 function insertMetaDataToDir(absSiteRoot: string, dirData: DirData) {
     //if dirData's url is not root "/", then remove the first /
     var relPath = dirData.url === "/" ? "" : dirData.url.slice(1, dirData.url.length);
@@ -83,18 +148,14 @@ function insertMetaDataToDir(absSiteRoot: string, dirData: DirData) {
                 basename: content,
                 url: childUrl,
                 parentDir: dirData,
-                frontMatter: {layout: ""} //temporary
+               // frontMatter: {layout: ""} //temporary
+               frontMatter: getFrontMatter(absPathContent)
             };
             dirData.pages.push(childFileData);
         }
     }
 
 }
-
-function getFrontMatter() {
-    
-}
-
 
 function getMetaDataForSite(absProjectRoot: string) : Site {
     if(!fs.existsSync(absProjectRoot)) {

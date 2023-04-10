@@ -6,6 +6,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const constants_1 = require("./constants");
 const fs_1 = __importDefault(require("fs"));
 const path_1 = __importDefault(require("path"));
+const helper_1 = require("./helper");
 class Site {
     constructor(rootDirData) {
         this.rootDirData = rootDirData;
@@ -22,6 +23,61 @@ class Site {
         }
         return null;
     }
+}
+function getFrontMatter(absFilePath) {
+    var jsonStarted = false;
+    var jsonEnded = false;
+    var stack = [];
+    var linesForJson = [];
+    var processLine = (line) => {
+        //  console.log(line);
+        //  console.log("END OF LINE");
+        for (var j = 0; j < line.length; j++) {
+            var char = line[j];
+            if (char === "{") {
+                stack.push(char);
+                if (!jsonStarted) {
+                    jsonStarted = true;
+                }
+            }
+            //if character is not whitespace and json {} has not been made
+            else if (char.trim() !== '' && !jsonStarted) {
+                return false;
+            }
+            else if (char === "}") {
+                stack.pop();
+                //end of json
+                if (stack.length === 0) {
+                    jsonEnded = true;
+                    break;
+                }
+            }
+        }
+        if (jsonStarted) {
+            linesForJson.push(line);
+            //if end of json line was found, stop reading lines
+            if (jsonEnded) {
+                return false;
+            }
+        }
+        return true;
+    };
+    (0, helper_1.readLineByLineSync)(absFilePath, processLine);
+    //front matter was started, but not closed
+    if (jsonStarted && !jsonEnded) {
+        return null;
+    }
+    var jsonString = linesForJson.join("");
+    try {
+        var json = JSON.parse(jsonString);
+        return json;
+    }
+    catch (err) {
+        return null;
+    }
+}
+//assumed that file already exists
+function getPageData(absFilePath) {
 }
 function insertMetaDataToDir(absSiteRoot, dirData) {
     //if dirData's url is not root "/", then remove the first /
@@ -54,7 +110,8 @@ function insertMetaDataToDir(absSiteRoot, dirData) {
                 basename: content,
                 url: childUrl,
                 parentDir: dirData,
-                frontMatter: { layout: "" } //temporary
+                // frontMatter: {layout: ""} //temporary
+                frontMatter: getFrontMatter(absPathContent)
             };
             dirData.pages.push(childFileData);
         }
