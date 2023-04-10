@@ -1,0 +1,24 @@
+{
+  "name": "static-site-gen",
+  "version": "1.0.0",
+  "description": "A static site generator that uses Markdown, EJS, and Sass.",
+  "main": "./dist/bin/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "bin": {
+    "staticsitegen": "./dist/bin/index.js"
+  },
+  "author": "Ryan O'Connor",
+  "license": "MIT",
+  "dependencies": {
+    "ejs": "^3.1.8",
+    "marked": "^4.2.2",
+    "sass": "^1.56.0"
+  },
+  "devDependencies": {
+    "@types/ejs": "^3.1.1",
+    "@types/marked": "^4.0.7",
+    "@types/node": "^18.11.9"
+  }
+}

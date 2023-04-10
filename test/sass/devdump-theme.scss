@@ -1,0 +1,22 @@
+@use "devdump-theme/_header";
+@use "devdump-theme/_footer";
+@use "devdump-theme/syntax-highlighting";
+@use "devdump-theme/table-of-contents";
+@use "devdump-theme/main-content";
+@use "devdump-theme/page-content-wrapper";
+
+
+* {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    box-sizing: border-box;
+}
+html {
+    height: 100%;
+    background-color: lightblue;
+}
+body {
+    background-color: lightblue;
+    
+}

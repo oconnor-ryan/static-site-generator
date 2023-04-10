@@ -1,0 +1,111 @@
+Goals of DevDump infodump section:
+* To provide basic overview of a topic
+    - Example: For Programming Languages, each one should gives instructions on:
+        * Installation
+        * Compiling/Interpreting file(s)
+        * Basic Features (Variables, Functions, Classes, Memory Management)
+        * Importing/Exporting Packages and Modules(like in python, ruby, javascript)
+        * Weird Quirks
+        * Sample Applications
+
+
+Goals of Project section:
+* Keep track of how project works
+* Draft documentation for the website before making it public.
+
+Tutorials:
+
+One collection that is needed is the tutorial collection, which is list of tutorials which describe how to recreate and solve certain problems. 
+These will only have ONE tag in order to isolate a problem. 
+They will have the directory format /tutorials/:TAG/:NAME.
+Tutorials that require more than one page will have the directory /tutorials/:TAG/:NAME/subpages.all
+
+
+Directories (with infodump as the root (/) directory)
+* /web
+    - frontend
+        * html
+        * css
+        * javascript
+            - Canvas
+            - WebGL
+            - AJAX
+    - backend
+        * servers
+            - Apache
+            - Tomcat
+        * CGI or FastCGI
+        * HTTP Request/Response
+        * languages (any language that has a driver for the server being used can be used)
+            - PHP
+                * templating html
+                * Responding to HTTP Request
+                * Interacting with databases
+            - Perl
+            - Java
+            - NodeJS (Javascript)
+
+    - frameworks
+        * static
+            - Jekyll
+        * fullstack
+            - Django
+            - MEAN (MongoDB, ExpressJS, Angular, NodeJS)
+        * backend
+            - LAMP
+            - Ruby on Rails
+        * frontend
+            - React
+            - Angular
+* /databases
+    - queries
+        * SQL
+        * NoSQL
+    - MariaDB
+    - MySQL
+    - MongoDB
+    - SQLite
+* /programming
+    - Java
+    - C
+    - C++
+    - Python
+        * pip
+    - PHP 
+    - Javascript
+        * modules
+    - Typescript
+    - Swift
+* /rendering
+    - OpenGL
+    - Matrices (Math)
+    - process (Model coords to View to Projection to Rasterization)
+
+* /mobileapp
+    - IOS development
+    - Android development
+    - Flutter
+
+* /commandline
+    * Windows
+        - batch scripts
+    * Unix
+        - shell scripts
+
+* /packagemanagers
+    * Homebrew
+    * Winget
+    * npm
+
+* /data-structures
+    * Linked List
+    * Trees
+
+* /machine-learning
+    * Regression
+    * Classification
+
+* /assemblylang
+
+* /linear-algrbra (mostly matrix math)
+
